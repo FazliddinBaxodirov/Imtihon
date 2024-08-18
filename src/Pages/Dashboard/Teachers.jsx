@@ -5,8 +5,11 @@ import { Airpods, SearchIcon, UpIcon } from '../../assets/Icons'
 import Coala from '../../assets/coala.png'
 import LoginBtn from '../../Components/LoginBtn'
 import { Context } from '../../Context/Context'
+import CustomModal from '../../Components/CustomModal'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Teachers() {
+  const [openModal,setOpenModal] = useState(false)
   const {list,setList} = useContext(Context)
   const [search, setSearch] = useState('')  
   const clickSearch = (event) => {
@@ -16,10 +19,24 @@ export default function Teachers() {
     )
     setList(filteredList)
   }
+  function logOut(){
+    setOpenModal(true)
+  }
+  function handleNo(){
+    setOpenModal(false)
+  }
+  function handleYes(){
+    toast.success('Successfully exit')
+    setTimeout(() => {
+      localStorage.clear()
+      location.pathname = '/'
+    }, 800);
+  }
   return (
     <div className='w-[80%] pl-[38px] pr-[99px] '>
+      <Toaster position="top-right" reverseOrder={false}/>
       <div className='w-full flex justify-end  pt-[30px] pb-[8px]'>
-        <Logoutwrapper extrastyle={'!bg-[white] !text-[#333] w-auto'}>
+        <Logoutwrapper logOut={logOut} extrastyle={'!bg-[white] !text-[#333] w-auto'}>
           Log Out
         </Logoutwrapper>
       </div>
@@ -69,6 +86,7 @@ export default function Teachers() {
           </LoginBtn>
         </div>
       )}
+      <CustomModal extrastyle={`${openModal ? 'scale-100' : 'scale-0'}`} handleNo={handleNo} handleYes={handleYes}/>
     </div>
   )
 }

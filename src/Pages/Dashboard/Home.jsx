@@ -1,14 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logoutwrapper from '../../Components/Logoutwrapper'
 import HomeItem from '../../Components/HomeItem'
 import { AddStudentsIcon, AdminsIcon, Airpods, ClassesIcon, UpIcon } from '../../assets/Icons'
 import LoginBtn from '../../Components/LoginBtn'
+import CustomModal from '../../Components/CustomModal'
+import toast, { Toaster } from 'react-hot-toast'
 export default function Home() {
+  const [openModal,setOpenModal] = useState(false)
+  function logOut(){
+    setOpenModal(true)
+  }
+  function handleNo(){
+    setOpenModal(false)
+  }
+  function handleYes(){
+    toast.success('Successfully exit')
+    setTimeout(() => {
+      localStorage.clear()
+      location.pathname = '/'
+    }, 800);
+  }
+
+  
   return (
     <div className='w-[80%] relative'>
+      <Toaster position="top-right" reverseOrder={false}/>
       <div className='flex justify-between pt-[34px] pb-[21px] pl-[147px] pr-[127px] bg-[#FCFAFA]'>
         <p className='flex flex-col space-y-0 text-[16px] leading-[20px] font-medium text-[#424242]'>Learn  how to launch faster <span className='font-normal'>watch our webinar for tips from our experts and get a limited time offer.</span></p>
-        <Logoutwrapper/>
+        <Logoutwrapper logOut={logOut}/>
       </div>
       <h2 className='ml-[127px] mt-[53px] mb-[23px] font-semibold text-[36px] leading-[44.65px] text-[#4F4F4F]'>Welcome to your dashboard, Udemy school</h2>
       <p className='ml-[232px] font-semibold text-[24px] leading-[30px] text-[#4F4F4F] mb-[6px]'>Uyo/school/@teachable.com</p>
@@ -24,6 +43,7 @@ export default function Home() {
         </div>
         <UpIcon/>
       </LoginBtn>
+      <CustomModal extrastyle={`${openModal ? 'scale-100' : 'scale-0'}`} handleNo={handleNo} handleYes={handleYes}/>
     </div>
     
   )
